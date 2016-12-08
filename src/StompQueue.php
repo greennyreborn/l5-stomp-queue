@@ -64,6 +64,18 @@ class StompQueue extends Queue implements QueueContract
     }
 
     /**
+     * Get the size of the queue.
+     *
+     * @param  string  $queue
+     * @return int
+     */
+    public function size($queue = null)
+    {
+        // TODO
+        return 0;
+    }
+
+    /**
      * Push a new job onto the queue.
      *
      * @param  string $job
@@ -86,8 +98,8 @@ class StompQueue extends Queue implements QueueContract
      */
     public function pushRaw($payload, $queue = null, array $options = [])
     {
-        $message = new Message($payload);
-        $this->getStomp()->send($this->getQueue($queue), $message, $options);
+        $message = new Message($payload, $options);
+        $this->getStomp()->send($this->getQueue($queue), $message);
     }
 
     /**

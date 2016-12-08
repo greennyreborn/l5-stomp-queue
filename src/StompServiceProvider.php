@@ -67,9 +67,9 @@ class StompServiceProvider extends ServiceProvider
     {
         $manager->extend('stomp', function ($app, $config) {
             $stomp = new Stomp(new Client($config['broker_url']));
-            //$stomp->sync         = Arr::get($config, 'sync', false);
-            //$stomp->prefetchSize = Arr::get($config, 'prefetchSize', 1);
-            //$stomp->clientId     = Arr::get($config, 'clientId', null);
+//            $stomp->sync         = Arr::get($config, 'sync', false);
+//            $stomp->prefetchSize = Arr::get($config, 'prefetchSize', 1);
+//            $stomp->clientId     = Arr::get($config, 'clientId', null);
 
             return new StompBroadcaster($stomp);
         });

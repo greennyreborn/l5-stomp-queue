@@ -2,11 +2,11 @@
 
 namespace Mayconbordin\L5StompQueue\Broadcasters;
 
+use Illuminate\Broadcasting\Broadcasters\Broadcaster;
 use Stomp\StatefulStomp as Stomp;
-use Illuminate\Contracts\Broadcasting\Broadcaster;
 use Illuminate\Support\Arr;
 
-class StompBroadcaster implements Broadcaster
+class StompBroadcaster extends Broadcaster
 {
     /**
      * The Stomp instance.
@@ -35,6 +35,47 @@ class StompBroadcaster implements Broadcaster
     }
 
     /**
+     * Authenticate the incoming request for a given channel.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed
+     */
+    public function auth($request)
+    {
+        if (Str::startsWith($request->channel_name, ['private-', 'presence-']) &&
+            ! $request->user()) {
+            throw new HttpException(403);
+        }
+
+        $channelName = Str::startsWith($request->channel_name, 'private-')
+            ? Str::replaceFirst('private-', '', $request->channel_name)
+            : Str::replaceFirst('presence-', '', $request->channel_name);
+
+        return parent::verifyUserCanAccessChannel(
+            $request, $channelName
+        );
+    }
+
+    /**
+     * Return the valid authentication response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $result
+     * @return mixed
+     */
+    public function validAuthenticationResponse($request, $result)
+    {
+        if (is_bool($result)) {
+            return json_encode($result);
+        }
+
+        return json_encode(['channel_data' => [
+            'user_id' => $request->user()->getKey(),
+            'user_info' => $result,
+        ]]);
+    }
+
+    /**
      * Broadcast the given event.
      *
      * @param  array $channels
@@ -56,7 +97,8 @@ class StompBroadcaster implements Broadcaster
     /**
      * Connect to Stomp server, if not connected.
      *
-     * @throws \FuseSource\Stomp\Exception\StompException
+     * @throws \Stomp\Exception\StompException
+     * @throws \Stomp\Exception\StompException
      */
     protected function connect()
     {
