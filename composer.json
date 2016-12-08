@@ -1,5 +1,5 @@
 {
-    "name": "mayconbordin/l5-stomp-queue",
+    "name": "greennyreborn/l5-stomp-queue",
     "description": "Stomp Queue Driver for Laravel 5",
     "keywords": ["laravel", "queue", "stomp", "laravel 5"],
     "license": "MIT",
@@ -15,11 +15,11 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": "5.0.x|5.1.x|5.2.x",
-        "illuminate/console": "5.0.x|5.1.x|5.2.x",
-        "illuminate/queue": "5.0.x|5.1.x|5.2.x",
-        "illuminate/broadcasting": "5.0.x|5.1.x|5.2.x",
-        "symfony/process": "~2.6",
+        "illuminate/support": "5.0.x|5.1.x|5.2.x|5.3.x",
+        "illuminate/console": "5.0.x|5.1.x|5.2.x|5.3.x",
+        "illuminate/queue": "5.0.x|5.1.x|5.2.x|5.3.x",
+        "illuminate/broadcasting": "5.0.x|5.1.x|5.2.x|5.3.x",
+        "symfony/process": "3.1.*",
         "stomp-php/stomp-php" : "4.*"
     },
     "require-dev": {
